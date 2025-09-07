@@ -6,6 +6,7 @@ import dev.doctor4t.trainmurdermystery.TrainMurderMystery;
 import dev.doctor4t.trainmurdermystery.block.*;
 import dev.doctor4t.trainmurdermystery.block.property.CouchArms;
 import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryBlocks;
+import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.*;
@@ -180,9 +181,8 @@ public class TrainMurderMysteryModelGen extends FabricModelProvider {
     private static final Model VENT_HATCH_OPEN = template(
             "block/template_vent_hatch_open", "_open", TextureKey.TEXTURE
     );
-    private static final Model SPYGLASS_IN_HAND = template(
-            Identifier.ofVanilla("item/spyglass_in_hand"), SPYGLASS_KEY
-    );
+
+
     private final Map<Block, TexturedModel> uniqueModels = ImmutableMap.<Block, TexturedModel>builder()
             .build();
 
@@ -320,6 +320,11 @@ public class TrainMurderMysteryModelGen extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator generator) {
+        generator.register(TrainMurderMysteryItems.ROOM_KEY, Models.GENERATED);
+        generator.register(TrainMurderMysteryItems.LOCKPICK, Models.GENERATED);
+        generator.register(TrainMurderMysteryItems.KNIFE, Models.HANDHELD);
+        generator.register(TrainMurderMysteryItems.POISON_VIAL, Models.GENERATED);
+        generator.register(TrainMurderMysteryItems.SCORPION, Models.GENERATED);
     }
 
     private BlockStateVariant variant() {

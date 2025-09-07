@@ -5,6 +5,7 @@ import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryEntities;
 import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.data.client.Models;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
@@ -182,6 +183,13 @@ public class TrainMurderMysteryLangGen extends FabricLanguageProvider {
         builder.add(TrainMurderMysteryBlocks.GOLD_ORNAMENT, "Golden Ornament");
         builder.add(TrainMurderMysteryBlocks.SMALL_GLASS_DOOR, "Small Glass Door");
         builder.add(TrainMurderMysteryBlocks.SMALL_WOOD_DOOR, "Small Wood Door");
+
+        builder.add(TrainMurderMysteryItems.ROOM_KEY, "Room Key");
+        builder.add(TrainMurderMysteryItems.LOCKPICK, "Lockpick");
+        builder.add(TrainMurderMysteryItems.KNIFE, "Knife");
+        builder.add(TrainMurderMysteryItems.REVOLVER, "Revolver");
+        builder.add(TrainMurderMysteryItems.POISON_VIAL, "Poison Vial");
+        builder.add(TrainMurderMysteryItems.SCORPION, "Scorpion");
 
         builder.add("itemGroup.trainmurdermystery.building", "TrainMurderMystery: Building Blocks");
         builder.add("itemGroup.trainmurdermystery.decoration", "TrainMurderMystery: Decoration & Functional");

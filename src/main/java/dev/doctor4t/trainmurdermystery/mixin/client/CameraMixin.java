@@ -1,6 +1,8 @@
 package dev.doctor4t.trainmurdermystery.mixin.client;
 
+import dev.doctor4t.trainmurdermystery.client.TrainMurderMysteryClient;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.noise.PerlinNoiseSampler;
@@ -16,14 +18,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class CameraMixin {
     @Unique
     private static final PerlinNoiseSampler sampler = new PerlinNoiseSampler(Random.create());
-    @Unique
-    private float yawOffset;
-    @Unique
-    private float pitchOffset;
 
     @Unique
     private static float randomizeOffset(int offset) {
-        float intensity = 0.1f;
+        float intensity = 0.2f;
 
         float min = -intensity * 2;
         float max = intensity * 2;
@@ -35,13 +33,22 @@ public class CameraMixin {
     private void trainmurdermystery$doScreenshake(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
         Camera camera = (Camera) (Object) this;
 
-        yawOffset = randomizeOffset(10);
-        pitchOffset = randomizeOffset(-10);
-//        camera.setRotation(camera.getYaw() + yawOffset, camera.getPitch() + pitchOffset);
-
-        int age = MinecraftClient.getInstance().player.age;
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        int age = player.age;
         float amplitude = .0025f;
         float strength = 0.5f;
+
+        if (TrainMurderMysteryClient.isSkyVisibleAdjacent(player)) {
+            amplitude = .01f;
+            strength = 1f;
+
+            if (TrainMurderMysteryClient.isExposedToWind(player)) {
+                float yawOffset = randomizeOffset(10);
+                float pitchOffset = randomizeOffset(-10);
+                camera.setRotation(camera.getYaw() + yawOffset, camera.getPitch() + pitchOffset);
+            }
+        }
+
         camera.setPos(camera.getPos().add(0, Math.sin((age + tickDelta) * strength) / 2f * amplitude, Math.cos((age + tickDelta) * strength) * amplitude));
     }
 }

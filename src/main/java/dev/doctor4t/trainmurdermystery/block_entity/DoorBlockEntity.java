@@ -1,6 +1,6 @@
 package dev.doctor4t.trainmurdermystery.block_entity;
 
-import dev.doctor4t.trainmurdermystery.index.sound.TrainMurderMysterySounds;
+import dev.doctor4t.trainmurdermystery.index.TrainMurderMysterySounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.AnimationState;
@@ -18,6 +18,8 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
     protected long lastUpdate = 0L;
     protected boolean open;
     protected int age = 0;
+
+    private String keyName = "";
 
     public DoorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -92,11 +94,31 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
         nbt.putBoolean("open", this.isOpen());
+        nbt.putString("keyName", this.getKeyName());
+        nbt.putInt("closeCountdown", this.getCloseCountdown());
     }
 
     @Override
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.readNbt(nbt, registryLookup);
         this.setOpen(nbt.getBoolean("open"));
+        this.setKeyName(nbt.getString("keyName"));
+        this.setCloseCountdown(nbt.getInt("closeCountdown"));
+    }
+
+    public String getKeyName() {
+        return this.keyName;
+    }
+
+    public void setKeyName(String string) {
+        this.keyName = string;
+    }
+
+    public int getCloseCountdown() {
+        return closeCountdown;
+    }
+
+    public void setCloseCountdown(int closeCountdown) {
+        this.closeCountdown = closeCountdown;
     }
 }

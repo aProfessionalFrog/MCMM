@@ -1,7 +1,7 @@
 package dev.doctor4t.trainmurdermystery.block;
 
 import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryProperties;
-import dev.doctor4t.trainmurdermystery.index.sound.TrainMurderMysterySounds;
+import dev.doctor4t.trainmurdermystery.index.TrainMurderMysterySounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;

@@ -19,6 +19,8 @@ chenille {
 }
 
 repositories {
+	mavenLocal()
+
 	// Modrinth
 	maven { url "https://api.modrinth.com/maven" }
 
@@ -42,6 +44,7 @@ loom {
 fabricApi {
 	configureDataGeneration() {
 		client = true
+		modId = project.name
 	}
 }
 

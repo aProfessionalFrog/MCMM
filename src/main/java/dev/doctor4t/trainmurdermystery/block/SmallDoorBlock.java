@@ -2,6 +2,7 @@ package dev.doctor4t.trainmurdermystery.block;
 
 import dev.doctor4t.trainmurdermystery.block_entity.DoorBlockEntity;
 import dev.doctor4t.trainmurdermystery.block_entity.SmallDoorBlockEntity;
+import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -17,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -136,18 +138,30 @@ public class SmallDoorBlock extends DoorPartBlock {
             }
             BlockPos lowerPos = state.get(HALF) == DoubleBlockHalf.LOWER ? pos : pos.down();
             if (world.getBlockEntity(lowerPos) instanceof SmallDoorBlockEntity entity) {
-                entity.toggle(false);
-                Direction facing = state.get(FACING);
-                BlockPos neighborPos = lowerPos.offset(facing.rotateYCounterclockwise());
-                BlockState neighborState = world.getBlockState(neighborPos);
-                if (neighborState.isOf(this)
-                        && neighborState.get(FACING).getOpposite() == facing
-                        && world.getBlockEntity(neighborPos) instanceof SmallDoorBlockEntity neighborEntity) {
-                    neighborEntity.toggle(true);
-                }
+                openDoor(state, world, entity, lowerPos);
             }
             return ActionResult.CONSUME;
-        } else return ActionResult.PASS;
+        } else {
+            if (world.isClient && !player.getMainHandStack().isOf(TrainMurderMysteryItems.ROOM_KEY)) {
+                player.sendMessage(Text.translatable("tip.door.requires_key"), true);
+                return ActionResult.FAIL;
+            }
+
+            return ActionResult.PASS;
+        }
+    }
+
+    public static void openDoor(BlockState state, World world, SmallDoorBlockEntity entity, BlockPos lowerPos) {
+        entity.toggle(false);
+        Direction facing = state.get(FACING);
+        BlockPos neighborPos = lowerPos.offset(facing.rotateYCounterclockwise());
+        BlockState neighborState = world.getBlockState(neighborPos);
+        if (neighborState.isOf(state.getBlock())
+                && neighborState.get(FACING).getOpposite() == facing
+                && world.getBlockEntity(neighborPos) instanceof SmallDoorBlockEntity neighborEntity) {
+            neighborEntity.toggle(true);
+        }
+        world.scheduleBlockTick();
     }
 
 }

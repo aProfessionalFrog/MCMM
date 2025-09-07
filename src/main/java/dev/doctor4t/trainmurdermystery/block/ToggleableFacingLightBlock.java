@@ -1,19 +1,14 @@
 package dev.doctor4t.trainmurdermystery.block;
 
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryItems;
-import dev.doctor4t.trainmurdermystery.index.sound.TrainMurderMysterySounds;
-import dev.doctor4t.trainmurdermystery.index.tag.TrainMurderMysteryBlockTags;
+import dev.doctor4t.trainmurdermystery.index.TrainMurderMysterySounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

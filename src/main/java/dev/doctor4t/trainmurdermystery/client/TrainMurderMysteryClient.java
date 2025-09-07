@@ -5,11 +5,7 @@ import dev.doctor4t.ratatouille.client.util.ambience.BackgroundAmbience;
 import dev.doctor4t.trainmurdermystery.TrainMurderMystery;
 import dev.doctor4t.trainmurdermystery.client.model.TrainMurderMysteryEntityModelLayers;
 import dev.doctor4t.trainmurdermystery.client.render.block_entity.SmallDoorBlockEntityRenderer;
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryBlockEntities;
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryBlocks;
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryEntities;
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryParticles;
-import dev.doctor4t.trainmurdermystery.index.sound.TrainMurderMysterySounds;
+import dev.doctor4t.trainmurdermystery.index.*;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -118,6 +114,20 @@ public class TrainMurderMysteryClient implements ClientModInitializer {
         }
 
         return false;
+    }
+
+    public static boolean isExposedToWind(ClientPlayerEntity player) {
+        BlockPos.Mutable mutable = new BlockPos.Mutable();
+        BlockPos playerPos = player.getBlockPos();
+
+        for (int x = 0; x <= 10; x++) {
+            mutable.set(playerPos.getX() - x, player.getEyePos().getY(), playerPos.getZ());
+            if (!player.clientWorld.isSkyVisible(mutable)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static class CustomModelProvider implements ModelLoadingPlugin {

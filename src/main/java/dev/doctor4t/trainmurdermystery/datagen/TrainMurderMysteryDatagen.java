@@ -25,38 +25,5 @@ public class TrainMurderMysteryDatagen implements DataGeneratorEntrypoint {
         pack.addProvider(TrainMurderMysteryBlockTagGen::new);
         pack.addProvider(TrainMurderMysteryLangGen::new);
         pack.addProvider(TrainMurderMysteryBlockLootTableGen::new);
-        pack.addProvider(DynamicRegistryGen::new);
-    }
-
-    public static class DynamicRegistryGen extends FabricDynamicRegistryProvider {
-
-
-        public DynamicRegistryGen(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-            super(output, registriesFuture);
-        }
-
-        private static <T> void add(Entries entries, RegistryKey<Registry<T>> key) {
-            entries.addAll((RegistryWrapper.Impl<T>) entries.getLookup(key));
-        }
-
-        @Override
-        protected void configure(RegistryWrapper.WrapperLookup registries, Entries entries) {
-            add(entries, RegistryKeys.NOISE_PARAMETERS);
-            add(entries, RegistryKeys.BIOME);
-            add(entries, RegistryKeys.CONFIGURED_FEATURE);
-            add(entries, RegistryKeys.PLACED_FEATURE);
-            add(entries, RegistryKeys.DENSITY_FUNCTION);
-            add(entries, RegistryKeys.CHUNK_GENERATOR_SETTINGS);
-            add(entries, RegistryKeys.DIMENSION);
-            add(entries, RegistryKeys.DIMENSION_TYPE);
-            add(entries, RegistryKeys.STRUCTURE);
-            add(entries, RegistryKeys.STRUCTURE_SET);
-            add(entries, RegistryKeys.PAINTING_VARIANT);
-        }
-
-        @Override
-        public String getName() {
-            return dev.doctor4t.trainmurdermystery.TrainMurderMystery.MOD_ID + "_dynamic_registry";
-        }
     }
 }
