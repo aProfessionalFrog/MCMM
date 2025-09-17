@@ -1,7 +1,7 @@
 package dev.doctor4t.trainmurdermystery.block;
 
 import com.mojang.serialization.MapCodec;
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryProperties;
+import dev.doctor4t.trainmurdermystery.index.TMMProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -20,9 +20,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class TrimmedStairsBlock extends HorizontalFacingBlock {
 
-    public static final BooleanProperty SUPPORT = TrainMurderMysteryProperties.SUPPORT;
-    public static final BooleanProperty LEFT = TrainMurderMysteryProperties.LEFT;
-    public static final BooleanProperty RIGHT = TrainMurderMysteryProperties.RIGHT;
+    public static final BooleanProperty SUPPORT = TMMProperties.SUPPORT;
+    public static final BooleanProperty LEFT = TMMProperties.LEFT;
+    public static final BooleanProperty RIGHT = TMMProperties.RIGHT;
 
     public static final VoxelShape BOTTOM = Block.createCuboidShape(0, 0, 0, 16, 6, 16);
     public static final VoxelShape NORTH_SHAPE = VoxelShapes.union(

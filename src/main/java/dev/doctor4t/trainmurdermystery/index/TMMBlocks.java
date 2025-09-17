@@ -212,7 +212,7 @@ public interface TMMBlocks {
     }
 
     private static ToIntFunction<BlockState> createLightLevelFromLitPoweredBlockState(int litLevel) {
-        return state -> state.get(Properties.LIT) && state.get(TrainMurderMysteryProperties.ACTIVE) ? litLevel : 0;
+        return state -> state.get(Properties.LIT) && state.get(TMMProperties.ACTIVE) ? litLevel : 0;
     }
 
     interface Family {

@@ -1,6 +1,6 @@
 package dev.doctor4t.trainmurdermystery.block;
 
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryProperties;
+import dev.doctor4t.trainmurdermystery.index.TMMProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class FacingLightBlock extends FacingBlock {
 
-    public static final BooleanProperty ACTIVE = TrainMurderMysteryProperties.ACTIVE;
+    public static final BooleanProperty ACTIVE = TMMProperties.ACTIVE;
 
     public FacingLightBlock(Settings settings) {
         super(settings);

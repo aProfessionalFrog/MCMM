@@ -22,6 +22,7 @@
     "client.restrictions.CreativeInventoryScreenMixin",
     "client.restrictions.EntityRendererMixin",
     "client.restrictions.KeyBindingMixin",
+    "client.restrictions.KeyboardMixin",
     "client.restrictions.MinecraftClientMixin",
     "client.restrictions.PlayerEntityRendererMixin",
     "client.restrictions.SleepingChatScreenMixin",

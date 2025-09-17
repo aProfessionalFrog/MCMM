@@ -1,6 +1,6 @@
 package dev.doctor4t.trainmurdermystery.block;
 
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryProperties;
+import dev.doctor4t.trainmurdermystery.index.TMMProperties;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSetType;
@@ -20,7 +20,7 @@ import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class TrainMurderMysteryButtonBlock extends ButtonBlock {
-    public static final BooleanProperty ACTIVE = TrainMurderMysteryProperties.ACTIVE;
+    public static final BooleanProperty ACTIVE = TMMProperties.ACTIVE;
 
     public TrainMurderMysteryButtonBlock(Settings settings) {
         super(BlockSetType.IRON, 20, settings);

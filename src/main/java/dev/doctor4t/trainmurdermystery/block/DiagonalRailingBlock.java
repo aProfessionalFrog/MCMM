@@ -2,7 +2,7 @@ package dev.doctor4t.trainmurdermystery.block;
 
 import com.mojang.serialization.MapCodec;
 import dev.doctor4t.trainmurdermystery.block.property.RailingShape;
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryProperties;
+import dev.doctor4t.trainmurdermystery.index.TMMProperties;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.StairShape;
@@ -21,8 +21,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class DiagonalRailingBlock extends AbstractRailingBlock {
 
-    public static final BooleanProperty LEFT = TrainMurderMysteryProperties.LEFT;
-    public static final EnumProperty<RailingShape> SHAPE = TrainMurderMysteryProperties.RAILING_SHAPE;
+    public static final BooleanProperty LEFT = TMMProperties.LEFT;
+    public static final EnumProperty<RailingShape> SHAPE = TMMProperties.RAILING_SHAPE;
     protected static final VoxelShape NORTH_LEFT_SHAPE = createShape(16, 8, 2, 0, 0, 8, 0);
     protected static final VoxelShape NORTH_RIGHT_SHAPE = createShape(16, 8, 2, 8, 0, 0, 0);
     protected static final VoxelShape EAST_LEFT_SHAPE = createShape(16, 2, 8, 14, 0, 14, 8);

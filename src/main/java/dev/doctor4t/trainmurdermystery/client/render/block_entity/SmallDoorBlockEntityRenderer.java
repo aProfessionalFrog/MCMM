@@ -37,7 +37,7 @@ public class SmallDoorBlockEntityRenderer extends AnimatableBlockEntityRenderer<
     @Override
     public void render(SmallDoorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         matrices.translate(0.5f, 1.5f, 0.5f);
-        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180));
+        matrices.scale(1, -1, 1);
         super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay);
     }
 

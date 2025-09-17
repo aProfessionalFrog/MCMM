@@ -1,7 +1,7 @@
 package dev.doctor4t.trainmurdermystery.block;
 
 import dev.doctor4t.trainmurdermystery.block.property.CouchArms;
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryProperties;
+import dev.doctor4t.trainmurdermystery.index.TMMProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class CouchBlock extends HorizontalFacingMountableBlock {
     public static final VoxelShape SHAPE = Block.createCuboidShape(0, 0, 0, 16, 8, 16);
-    public static final EnumProperty<CouchArms> ARMS = TrainMurderMysteryProperties.COUCH_ARMS;
+    public static final EnumProperty<CouchArms> ARMS = TMMProperties.COUCH_ARMS;
 
     public CouchBlock(Settings settings) {
         super(settings);

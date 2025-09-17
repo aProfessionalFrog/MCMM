@@ -1,6 +1,6 @@
 package dev.doctor4t.trainmurdermystery.block;
 
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryProperties;
+import dev.doctor4t.trainmurdermystery.index.TMMProperties;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,8 +17,8 @@ import java.util.Set;
 
 public interface PrivacyBlock {
 
-    BooleanProperty OPAQUE = TrainMurderMysteryProperties.OPAQUE;
-    BooleanProperty INTERACTION_COOLDOWN = TrainMurderMysteryProperties.INTERACTION_COOLDOWN;
+    BooleanProperty OPAQUE = TMMProperties.OPAQUE;
+    BooleanProperty INTERACTION_COOLDOWN = TMMProperties.INTERACTION_COOLDOWN;
     Direction[][] DIAGONALS = new Direction[][]{
             new Direction[]{Direction.NORTH, Direction.EAST},
             new Direction[]{Direction.SOUTH, Direction.EAST},

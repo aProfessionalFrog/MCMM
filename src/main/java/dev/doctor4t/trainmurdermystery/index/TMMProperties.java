@@ -6,7 +6,7 @@ import dev.doctor4t.trainmurdermystery.block.property.RailingShape;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 
-public interface TrainMurderMysteryProperties {
+public interface TMMProperties {
     BooleanProperty ACTIVE = BooleanProperty.of("active"); // whether a block is receiving power from a breaker
     BooleanProperty INTERACTION_COOLDOWN = BooleanProperty.of("interaction_cooldown");
     BooleanProperty LEFT = BooleanProperty.of("left");

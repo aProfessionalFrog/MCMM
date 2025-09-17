@@ -1,6 +1,6 @@
 package dev.doctor4t.trainmurdermystery.block;
 
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryProperties;
+import dev.doctor4t.trainmurdermystery.index.TMMProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
@@ -18,7 +18,7 @@ import net.minecraft.world.WorldAccess;
 
 public class BarBlock extends PillarBlock {
 
-    public static final BooleanProperty TOP = TrainMurderMysteryProperties.TOP;
+    public static final BooleanProperty TOP = TMMProperties.TOP;
     public static final BooleanProperty BOTTOM = Properties.BOTTOM;
 
     protected static final VoxelShape X_SHAPE = Block.createCuboidShape(0, 6, 6, 16, 10, 10);

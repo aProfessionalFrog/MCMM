@@ -2,7 +2,7 @@ package dev.doctor4t.trainmurdermystery.block;
 
 import com.mojang.serialization.MapCodec;
 import dev.doctor4t.trainmurdermystery.block.property.OrnamentShape;
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryProperties;
+import dev.doctor4t.trainmurdermystery.index.TMMProperties;
 import dev.doctor4t.trainmurdermystery.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class OrnamentBlock extends FacingBlock {
 
-    public static final EnumProperty<OrnamentShape> SHAPE = TrainMurderMysteryProperties.ORNAMENT_SHAPE;
+    public static final EnumProperty<OrnamentShape> SHAPE = TMMProperties.ORNAMENT_SHAPE;
 
     public OrnamentBlock(Settings settings) {
         super(settings);

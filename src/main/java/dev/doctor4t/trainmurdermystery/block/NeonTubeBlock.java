@@ -1,6 +1,6 @@
 package dev.doctor4t.trainmurdermystery.block;
 
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryProperties;
+import dev.doctor4t.trainmurdermystery.index.TMMProperties;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -24,7 +24,7 @@ import net.minecraft.world.WorldAccess;
 
 public class NeonTubeBlock extends BarBlock {
     public static final BooleanProperty LIT = Properties.LIT;
-    public static final BooleanProperty ACTIVE = TrainMurderMysteryProperties.ACTIVE;
+    public static final BooleanProperty ACTIVE = TMMProperties.ACTIVE;
 
     protected static final VoxelShape X_SHAPE = Block.createCuboidShape(0, 4, 4, 16, 12, 12);
     protected static final VoxelShape Y_SHAPE = Block.createCuboidShape(4, 0, 4, 12, 16, 12);
