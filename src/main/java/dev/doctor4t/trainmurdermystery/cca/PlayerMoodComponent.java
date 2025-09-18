@@ -8,8 +8,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
@@ -27,6 +25,11 @@ import java.util.Objects;
 public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingComponent, ClientTickingComponent {
     public static final Identifier MOOD = TMM.id("mood");
     public static final ComponentKey<PlayerMoodComponent> KEY = ComponentRegistry.getOrCreate(MOOD, PlayerMoodComponent.class);
+    public static final Identifier ARROW_UP = TMM.id("hud/arrow_up");
+    public static final Identifier ARROW_DOWN = TMM.id("hud/arrow_down");
+    public static final Identifier MOOD_HAPPY = TMM.id("hud/mood_happy");
+    public static final Identifier MOOD_MID = TMM.id("hud/mood_mid");
+    public static final Identifier MOOD_DEPRESSIVE = TMM.id("hud/mood_depressive");
     private final PlayerEntity player;
     private TrainPreference currentPreference = TrainPreference.TRUE;
     private int nextPreferenceTimer = 0;
@@ -35,6 +38,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
     private String previousPreferenceText = "";
     private String preferenceText = "";
     private float preferenceTextAlpha = 0f;
+    private float arrowProgress = 1f;
 
     public PlayerMoodComponent(PlayerEntity player) {
         this.player = player;
@@ -56,11 +60,30 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         var renderer = MinecraftClient.getInstance().textRenderer;
         var textWidth = renderer.getWidth(this.previousPreferenceText);
         context.getMatrices().push();
-        context.getMatrices().translate(- (10 + textWidth) * (1f - this.preferenceTextAlpha), 0, 0);
-        context.drawTextWithShadow(renderer, this.previousPreferenceText, 8, 8, MathHelper.packRgb(1f, 1f, 1f) | ((int) (this.preferenceTextAlpha * 255) << 24));
+        context.getMatrices().translate(-(24 + textWidth) * (1f - this.preferenceTextAlpha), 0, 0);
+
+        var mood = MOOD_HAPPY;
+        if (this.mood < 0.2f) {
+            mood = MOOD_DEPRESSIVE;
+        } else if (this.mood < 0.55f) {
+            mood = MOOD_MID;
+        }
+        context.drawGuiTexture(mood, 5, 6, 14, 17);
+
+        this.arrowProgress = MathHelper.lerp(tickCounter.getTickDelta(true) / 8, this.arrowProgress, 1f);
+        if (this.arrowProgress < 0.99f) {
+            var arrow = this.fulfilled ? ARROW_UP : ARROW_DOWN;
+            context.getMatrices().push();
+            context.getMatrices().translate(0, 4 - this.arrowProgress * 4, 0);
+            context.drawGuiTexture(arrow, 7, 6, 10, 13);
+            context.getMatrices().pop();
+        }
+
+        context.drawTextWithShadow(renderer, this.previousPreferenceText, 22, 8, MathHelper.packRgb(1f, 1f, 1f) | ((int) (this.preferenceTextAlpha * 255) << 24));
         context.getMatrices().pop();
         context.getMatrices().push();
-        context.getMatrices().translate(12, 10 + renderer.fontHeight, 0);
+        context.getMatrices().translate(26, 10 + renderer.fontHeight, 0);
+        context.getMatrices().translate(-(24 + textWidth) * (1f - this.preferenceTextAlpha), 0, 0);
         context.getMatrices().scale((textWidth - 8) * this.mood, 1, 1);
         context.fill(0, 0, 1, 1, MathHelper.hsvToRgb(this.mood / 3.0F, 1.0F, 1.0F) | ((int) (this.preferenceTextAlpha * 255) << 24));
         context.getMatrices().pop();
@@ -78,6 +101,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
     public void clientTick() {
         if (!TMMComponents.GAME.get(this.player.getWorld()).isRunning()) return;
         this.tickMood();
+        if (this.player.age % 80 == 0) this.arrowProgress = 0f;
     }
 
     @Override
