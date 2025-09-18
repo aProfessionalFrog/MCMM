@@ -33,7 +33,7 @@ public class HandParticleManager {
         Vector3f up = new Vector3f(0, 1, 0);
 
         for (HandParticle p : particles) {
-            RenderLayer rl = RenderLayer.getEntityTranslucentEmissive(p.texture);
+            RenderLayer rl = p.renderLayerFactory.apply(p.texture);
             VertexConsumer consumer = vertexConsumers.getBuffer(rl);
 
             float half = p.size * 0.5f;
@@ -59,19 +59,19 @@ public class HandParticleManager {
             Vector3f c3 = new Vector3f(center).add(new Vector3f(right).mul( half)).add(new Vector3f(up).mul( half));
             Vector3f c4 = new Vector3f(center).add(new Vector3f(right).mul( half)).add(new Vector3f(up).mul(-half));
 
-            putVertex(consumer, model, c1, u0, v1, LightmapTextureManager.MAX_LIGHT_COORDINATE);
-            putVertex(consumer, model, c2, u0, v0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
-            putVertex(consumer, model, c3, u1, v0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
-            putVertex(consumer, model, c4, u1, v1, LightmapTextureManager.MAX_LIGHT_COORDINATE);
+            putVertex(consumer, model, c1, u0, v1, p);
+            putVertex(consumer, model, c2, u0, v0, p);
+            putVertex(consumer, model, c3, u1, v0, p);
+            putVertex(consumer, model, c4, u1, v1, p);
         }
     }
 
-    private static void putVertex(VertexConsumer consumer, Matrix4f model, Vector3f pos, float u, float v, int light) {
+    private static void putVertex(VertexConsumer consumer, Matrix4f model, Vector3f pos, float u, float v, HandParticle p) {
         consumer.vertex(model, pos.x, pos.y, pos.z)
-                .color(1f, 1f, 1f, 1f)
+                .color(p.r, p.g, p.b, p.a)
                 .texture(u, v)
                 .overlay(OverlayTexture.DEFAULT_UV)
-                .light(light)
+                .light(p.light)
                 .normal(0f, 1f, 0f);
     }
 }
