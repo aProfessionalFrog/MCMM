@@ -9,6 +9,8 @@ import dev.doctor4t.trainmurdermystery.cca.TMMComponents;
 import dev.doctor4t.trainmurdermystery.cca.WorldGameComponent;
 import dev.doctor4t.trainmurdermystery.client.gui.MoodRenderer;
 import dev.doctor4t.trainmurdermystery.client.model.TrainMurderMysteryEntityModelLayers;
+import dev.doctor4t.trainmurdermystery.client.render.block_entity.DrinkPlateBlockEntityRenderer;
+import dev.doctor4t.trainmurdermystery.client.render.block_entity.PlateBlockEntityRenderer;
 import dev.doctor4t.trainmurdermystery.client.render.block_entity.SmallDoorBlockEntityRenderer;
 import dev.doctor4t.trainmurdermystery.client.render.block_entity.WheelBlockEntityRenderer;
 import dev.doctor4t.trainmurdermystery.client.util.TMMItemTooltips;
@@ -113,7 +115,9 @@ public class TMMClient implements ClientModInitializer {
                 TMMBlocks.GOLD_SPRINKLER,
                 TMMBlocks.GOLD_ORNAMENT,
                 TMMBlocks.WHEEL,
-                TMMBlocks.BARRIER_PANEL
+                TMMBlocks.BARRIER_PANEL,
+                TMMBlocks.PLATE,
+                TMMBlocks.DRINK_PLATE
         );
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
                 TMMBlocks.RHOMBUS_GLASS,
@@ -144,6 +148,14 @@ public class TMMClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(
                 TMMBlockEntities.WHEEL,
                 ctx -> new WheelBlockEntityRenderer(TMM.id("textures/entity/wheel.png"), ctx)
+        );
+        BlockEntityRendererFactories.register(
+                TMMBlockEntities.PLATE,
+                PlateBlockEntityRenderer::new
+        );
+        BlockEntityRendererFactories.register(
+                TMMBlockEntities.DRINK_PLATE,
+                DrinkPlateBlockEntityRenderer::new
         );
 
         // Ambience
