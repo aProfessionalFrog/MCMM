@@ -64,7 +64,7 @@ public class StoreRenderer {
         public void render(TextRenderer renderer, @NotNull DrawContext context, int x, int y, int colour, float delta) {
             context.getMatrices().push();
             context.getMatrices().translate(x, y, 0);
-            context.drawTextWithShadow(renderer, "€", 0, 0, colour);
+            context.drawTextWithShadow(renderer, "\uE781", 0, 0, colour);
             var offset = -8;
             for (var digit : this.digits) {
                 context.getMatrices().push();

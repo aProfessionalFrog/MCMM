@@ -67,7 +67,7 @@ public class LimitedInventoryScreen extends LimitedHandledScreen<PlayerScreenHan
                 this.screen.renderLimitedInventoryTooltip(context, this.entry.stack());
                 drawSlotHighlight(context, this.getX(), this.getY(), 0);
             }
-            var price = Text.literal(this.entry.price() + "€");
+            var price = Text.literal(this.entry.price() + "\uE781");
             context.drawTooltip(this.screen.textRenderer, price, this.getX() - 4 - this.screen.textRenderer.getWidth(price) / 2, this.getY() - 9);
         }
 
