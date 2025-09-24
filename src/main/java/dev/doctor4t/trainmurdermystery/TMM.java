@@ -89,9 +89,10 @@ public class TMM implements ModInitializer {
 // TODO: - Change mood down effect from speed to something else (to prevent players being able to innocent each other on an easily observable change)
 
 // TORECORD: Fixing the hitman
-// TORECORD: Remove target system and make the win condition a kill count
+// TORECORD: Remove target system and make the win condition a kill count, turning him into a psycho
+// TORECORD: New name display system to allow anyone to know player's names, displays "psycho cohort" for other psychos, and instinct now shows other psychos instead of targets, game recognizes game
 // TORECORD: Hitman item shop
-// TORECORD: Fixing the knife (now with a kill indicator, also show new name system to allow anyone to know player's names)
+// TORECORD: Fixing the knife (now with a kill indicator)
 // TORECORD: New name system shows who else is the hitman allowing them to scheme together
 // TODO: - Explosive for clumped up people (foils the grouping up cheese)
 // TORECORD: - Poison (poisons the next food or drink item)

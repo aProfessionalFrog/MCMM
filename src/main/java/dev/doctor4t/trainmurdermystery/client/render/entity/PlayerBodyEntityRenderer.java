@@ -39,8 +39,11 @@ public class PlayerBodyEntityRenderer<T extends LivingEntity, M extends EntityMo
 
         matrixStack.push();
         float clamp = MathHelper.clamp((float) (playerBodyEntity.age - GameConstants.TIME_TO_DECOMPOSITION) / GameConstants.DECOMPOSING_TIME, 0, GameConstants.TIME_TO_DECOMPOSITION + GameConstants.DECOMPOSING_TIME);
-        matrixStack.translate(0, Easing.CUBIC_IN.ease(clamp, 0, -1, 1), 0);
-        super.render(playerBodyEntity, f, g, matrixStack, vertexConsumerProvider, light);
+        float ease = Easing.CUBIC_IN.ease(clamp, 0, -1, 1);
+        if (ease > -3) {
+            matrixStack.translate(0, ease, 0);
+            super.render(playerBodyEntity, f, g, matrixStack, vertexConsumerProvider, light);
+        }
         matrixStack.pop();
 
         renderSkeleton(playerBodyEntity, f, g, matrixStack, vertexConsumerProvider, light);
@@ -163,6 +166,6 @@ public class PlayerBodyEntityRenderer<T extends LivingEntity, M extends EntityMo
 
     @Override
     protected float getAnimationProgress(PlayerBodyEntity entity, float tickDelta) {
-        return 0f;
+        return 0.1f;
     }
 }

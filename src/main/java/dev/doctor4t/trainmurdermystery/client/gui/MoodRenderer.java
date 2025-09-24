@@ -123,7 +123,7 @@ public class MoodRenderer {
         public Text text = Text.empty();
 
         public boolean tick(PlayerMoodComponent.TrainTask present, float delta) {
-            if (present != null) this.text = present.getText();
+            if (present != null) this.text = Text.translatable("task."+present.getName());
             this.present = present != null;
             this.alpha = MathHelper.lerp(delta / 16, this.alpha, present != null ? 1f : 0f);
             this.offset = MathHelper.lerp(delta / 32, this.offset, this.index);

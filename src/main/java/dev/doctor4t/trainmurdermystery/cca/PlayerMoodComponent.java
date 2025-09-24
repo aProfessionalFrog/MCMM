@@ -179,8 +179,8 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         }
 
         @Override
-        public Text getText() {
-            return Text.literal("You should get some sleep");
+        public String getName() {
+            return "sleep";
         }
 
         @Override
@@ -215,8 +215,8 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         }
 
         @Override
-        public Text getText() {
-            return Text.literal("You should get some fresh air");
+        public String getName() {
+            return "outside";
         }
 
         @Override
@@ -242,8 +242,8 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         }
 
         @Override
-        public Text getText() {
-            return Text.literal("You should get something to eat");
+        public String getName() {
+            return "eat";
         }
 
         @Override
@@ -268,8 +268,8 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         }
 
         @Override
-        public @NotNull Text getText() {
-            return Text.literal("You should get something to drink");
+        public String getName() {
+            return "drink";
         }
 
         @Override
@@ -290,7 +290,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
 
         boolean isFulfilled(PlayerEntity player);
 
-        Text getText();
+        String getName();
 
         Task getType();
 

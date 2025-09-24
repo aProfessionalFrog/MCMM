@@ -74,7 +74,7 @@ public class PoisonUtils {
                     poisonTicks - Random.createThreadSafe().nextBetween(100, 300), 0, PlayerPoisonComponent.clampTime.getRight()));
 
             ServerPlayNetworking.send(
-                    player, new PoisonOverlayPayload("game.player.poisoned")
+                    player, new PoisonOverlayPayload("game.player.stung")
             );
         }
     }

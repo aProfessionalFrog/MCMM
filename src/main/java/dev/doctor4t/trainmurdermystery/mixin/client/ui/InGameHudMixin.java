@@ -3,6 +3,7 @@ package dev.doctor4t.trainmurdermystery.mixin.client.ui;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import dev.doctor4t.ratatouille.client.lib.render.helpers.Easing;
 import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.client.gui.CrosshairRenderer;
@@ -86,8 +87,28 @@ public class InGameHudMixin {
         original.call(instance, TMMClient.isPlayerAliveAndInSurvival() ? TMM_HOTBAR_SELECTION_TEXTURE : texture, x, y, width, height);
     }
 
+    @WrapMethod(method = "renderMiscOverlays")
+    private void tmm$moveSleepOverlayToUnderUI(DrawContext context, RenderTickCounter tickCounter, Operation<Void> original) {
+        // sleep overlay
+        if (this.client.player != null && this.client.player.getSleepTimer() > 0) {
+            this.client.getProfiler().push("sleep");
+
+            float f = (float) this.client.player.getSleepTimer();
+            float g = f / 30f;
+            if (f > 100f) {
+                g = 1 - (f - 100f) / 10f;
+            }
+
+            float fadeAlpha = MathHelper.lerp(MathHelper.clamp(Easing.SINE_IN.ease(g, 0, 1, 1), 0, 1), 0f, 1f);
+            Color color = new Color(0.04f, 0f, 0.08f, fadeAlpha);
+            context.fill(RenderLayer.getGuiOverlay(), 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(), color.getRGB());
+
+            this.client.getProfiler().pop();
+        }
+    }
+
     @WrapMethod(method = "renderSleepOverlay")
-    private void tmm$overrideSleepOverlay(DrawContext context, RenderTickCounter tickCounter, Operation<Void> original) {
+    private void tmm$removeSleepOverlayAndDoGameFade(DrawContext context, RenderTickCounter tickCounter, Operation<Void> original) {
         if (TMMClient.gameComponent != null) {
             // game start / stop fade in / out
             float fadeIn = TMMClient.gameComponent.getFade();
@@ -99,20 +120,6 @@ public class InGameHudMixin {
                 context.fill(RenderLayer.getGuiOverlay(), 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(), color.getRGB());
                 this.client.getProfiler().pop();
             }
-        }
-
-        // darker sleep overlay
-        if (this.client.player != null && this.client.player.getSleepTimer() > 0) {
-            this.client.getProfiler().push("sleep");
-            float f = (float) this.client.player.getSleepTimer();
-            float g = f / 100.0F;
-            if (g > 1.0F) {
-                g = 1.0F - (f - 100.0F);
-            }
-
-            int i = (int) (255.0F * g) << 24 | 1052704;
-            context.fill(RenderLayer.getGuiOverlay(), 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(), i);
-            this.client.getProfiler().pop();
         }
     }
 }
