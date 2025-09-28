@@ -1,6 +1,6 @@
 package dev.doctor4t.trainmurdermystery.client.gui;
 
-import dev.doctor4t.trainmurdermystery.cca.PlayerStoreComponent;
+import dev.doctor4t.trainmurdermystery.cca.PlayerShopComponent;
 import dev.doctor4t.trainmurdermystery.cca.TMMComponents;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import net.minecraft.client.MinecraftClient;
@@ -20,7 +20,7 @@ public class StoreRenderer {
 
     public static void renderHud(TextRenderer renderer, @NotNull ClientPlayerEntity player, @NotNull DrawContext context, float delta) {
         if (!TMMComponents.GAME.get(player.getWorld()).isHitman(player)) return;
-        var balance = PlayerStoreComponent.KEY.get(player).balance;
+        var balance = PlayerShopComponent.KEY.get(player).balance;
         if (view.getTarget() != balance) {
             offsetDelta = balance > view.getTarget() ? .6f : -.6f;
             view.setTarget(balance);

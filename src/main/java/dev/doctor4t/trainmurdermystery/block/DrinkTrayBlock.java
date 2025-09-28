@@ -1,7 +1,7 @@
 package dev.doctor4t.trainmurdermystery.block;
 
 import com.mojang.serialization.MapCodec;
-import dev.doctor4t.trainmurdermystery.block_entity.DrinkPlateBlockEntity;
+import dev.doctor4t.trainmurdermystery.block_entity.DrinkTrayBlockEntity;
 import dev.doctor4t.trainmurdermystery.index.TMMBlockEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMDataComponentTypes;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
@@ -50,7 +50,7 @@ public class DrinkTrayBlock extends BlockWithEntity {
 
     @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new DrinkPlateBlockEntity(TMMBlockEntities.DRINK_PLATE, pos, state);
+        return new DrinkTrayBlockEntity(TMMBlockEntities.DRINK_TRAY, pos, state);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class DrinkTrayBlock extends BlockWithEntity {
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (world.isClient) return ActionResult.SUCCESS;
 
-        if (!(world.getBlockEntity(pos) instanceof DrinkPlateBlockEntity blockEntity)) {
+        if (!(world.getBlockEntity(pos) instanceof DrinkTrayBlockEntity blockEntity)) {
             return ActionResult.PASS;
         }
 
@@ -119,6 +119,7 @@ public class DrinkTrayBlock extends BlockWithEntity {
 
                 if (blockEntity.getPoisonedItemsCount() > 0) {
                     randomItem.set(TMMDataComponentTypes.POISONED, true);
+                    randomItem.set(TMMDataComponentTypes.POISONER, player.getUuidAsString());
                     blockEntity.setPoisonedItemsCount(blockEntity.getPoisonedItemsCount() - 1);
                 }
 
@@ -137,9 +138,9 @@ public class DrinkTrayBlock extends BlockWithEntity {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        if (!world.isClient || !type.equals(TMMBlockEntities.DRINK_PLATE)) {
+        if (!world.isClient || !type.equals(TMMBlockEntities.DRINK_TRAY)) {
             return null;
         }
-        return DrinkPlateBlockEntity::clientTick;
+        return DrinkTrayBlockEntity::clientTick;
     }
 }

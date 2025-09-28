@@ -1,6 +1,6 @@
 package dev.doctor4t.trainmurdermystery.client.render.block_entity;
 
-import dev.doctor4t.trainmurdermystery.block_entity.DrinkPlateBlockEntity;
+import dev.doctor4t.trainmurdermystery.block_entity.DrinkTrayBlockEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
@@ -9,7 +9,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.RotationAxis;
 
-public class DrinkPlateBlockEntityRenderer implements BlockEntityRenderer<DrinkPlateBlockEntity> {
+public class DrinkPlateBlockEntityRenderer implements BlockEntityRenderer<DrinkTrayBlockEntity> {
     private final ItemRenderer itemRenderer;
 
     public DrinkPlateBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
@@ -17,7 +17,7 @@ public class DrinkPlateBlockEntityRenderer implements BlockEntityRenderer<DrinkP
     }
 
     @Override
-    public void render(DrinkPlateBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(DrinkTrayBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         int itemCount = entity.getStoredItems().size();
         if (itemCount == 0) return;
 

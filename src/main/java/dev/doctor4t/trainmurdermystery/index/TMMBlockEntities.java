@@ -13,8 +13,8 @@ public interface TMMBlockEntities {
     BlockEntityType<SmallDoorBlockEntity> SMALL_WOOD_DOOR = registrar.create("small_wood_door", BlockEntityType.Builder.create(SmallDoorBlockEntity::createWood, TMMBlocks.SMALL_WOOD_DOOR));
     BlockEntityType<SmallDoorBlockEntity> SMALL_TRAIN_DOOR = registrar.create("small_train_door", BlockEntityType.Builder.create(SmallDoorBlockEntity::createTrain, TMMBlocks.SMALL_TRAIN_DOOR));
     BlockEntityType<WheelBlockEntity> WHEEL = registrar.create("wheel", BlockEntityType.Builder.create(WheelBlockEntity::create, TMMBlocks.WHEEL));
-    BlockEntityType<PlateBlockEntity> PLATE = registrar.create("plate", BlockEntityType.Builder.create(PlateBlockEntity::create, TMMBlocks.FOOD_PLATTER));
-    BlockEntityType<DrinkPlateBlockEntity> DRINK_PLATE = registrar.create("drink_plate", BlockEntityType.Builder.create(DrinkPlateBlockEntity::create, TMMBlocks.DRINK_TRAY));
+    BlockEntityType<FoodPlatterBlockEntity> FOOD_PLATTER = registrar.create("food_platter", BlockEntityType.Builder.create(FoodPlatterBlockEntity::create, TMMBlocks.FOOD_PLATTER));
+    BlockEntityType<DrinkTrayBlockEntity> DRINK_TRAY = registrar.create("drink_tray", BlockEntityType.Builder.create(DrinkTrayBlockEntity::create, TMMBlocks.DRINK_TRAY));
     BlockEntityType<TrimmedBedBlockEntity> TRIMMED_BED = registrar.create("trimmed_bed", BlockEntityType.Builder.create(TrimmedBedBlockEntity::create, TMMBlocks.RED_TRIMMED_BED, TMMBlocks.WHITE_TRIMMED_BED));
 
     static void initialize() {

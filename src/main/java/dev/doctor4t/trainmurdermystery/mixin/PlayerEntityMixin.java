@@ -39,6 +39,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.UUID;
+
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
     @Shadow
@@ -87,7 +89,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         }
 
         if (GameFunctions.isPlayerAliveAndSurvival(self) && getMainHandStack().isOf(TMMItems.BAT) && target instanceof PlayerEntity playerTarget && this.getAttackCooldownProgress(0.5F) >= 1f) {
-            GameFunctions.killPlayer(playerTarget, true);
+            GameFunctions.killPlayer(playerTarget, true, self);
             self.getEntityWorld().playSound(self,
                     playerTarget.getX(), playerTarget.getEyeY(), playerTarget.getZ(),
                     TMMSounds.ITEM_BAT_HIT, SoundCategory.PLAYERS,
@@ -104,10 +106,18 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         if (stack.getOrDefault(TMMDataComponentTypes.POISONED, false) && !world.isClient) {
             int poisonTicks = PlayerPoisonComponent.KEY.get(this).poisonTicks;
 
-            if (poisonTicks == -1) PlayerPoisonComponent.KEY.get(this).setPoisonTicks(
-                    Random.createThreadSafe().nextBetween(PlayerPoisonComponent.clampTime.getLeft(), PlayerPoisonComponent.clampTime.getRight()));
-            else PlayerPoisonComponent.KEY.get(this).setPoisonTicks(MathHelper.clamp(
-                    poisonTicks - Random.createThreadSafe().nextBetween(100, 300), 0, PlayerPoisonComponent.clampTime.getRight()));
+            String poisoner = stack.getOrDefault(TMMDataComponentTypes.POISONER, null);
+            if (poisonTicks == -1) {
+                PlayerPoisonComponent.KEY.get(this).setPoisonTicks(
+                        Random.createThreadSafe().nextBetween(PlayerPoisonComponent.clampTime.getLeft(), PlayerPoisonComponent.clampTime.getRight()),
+                        poisoner == null ? null : UUID.fromString(poisoner)
+                );
+            } else {
+                PlayerPoisonComponent.KEY.get(this).setPoisonTicks(
+                        MathHelper.clamp(poisonTicks - Random.createThreadSafe().nextBetween(100, 300), 0, PlayerPoisonComponent.clampTime.getRight()),
+                        poisoner == null ? null : UUID.fromString(poisoner)
+                );
+            }
         }
     }
 

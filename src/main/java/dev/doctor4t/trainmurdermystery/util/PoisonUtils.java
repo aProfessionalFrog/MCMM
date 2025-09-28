@@ -22,6 +22,8 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 public class PoisonUtils {
     public static float getFovMultiplier(float tickDelta, PlayerPoisonComponent poisonComponent) {
         if (!poisonComponent.pulsing) return 1f;
@@ -65,13 +67,22 @@ public class PoisonUtils {
         if (blockEntity == null) return;
 
         if (!world.isClient) {
-            blockEntity.setHasScorpion(false);
+            blockEntity.setHasScorpion(false, null);
             int poisonTicks = PlayerPoisonComponent.KEY.get(player).poisonTicks;
 
-            if (poisonTicks == -1) PlayerPoisonComponent.KEY.get(player).setPoisonTicks(
-                    Random.createThreadSafe().nextBetween(PlayerPoisonComponent.clampTime.getLeft(), PlayerPoisonComponent.clampTime.getRight()));
-            else PlayerPoisonComponent.KEY.get(player).setPoisonTicks(MathHelper.clamp(
-                    poisonTicks - Random.createThreadSafe().nextBetween(100, 300), 0, PlayerPoisonComponent.clampTime.getRight()));
+            UUID poisoner = blockEntity.getPoisoner();
+
+            if (poisonTicks == -1) {
+                PlayerPoisonComponent.KEY.get(player).setPoisonTicks(
+                        Random.createThreadSafe().nextBetween(PlayerPoisonComponent.clampTime.getLeft(), PlayerPoisonComponent.clampTime.getRight()),
+                        poisoner
+                );
+            } else {
+                PlayerPoisonComponent.KEY.get(player).setPoisonTicks(
+                        MathHelper.clamp(poisonTicks - Random.createThreadSafe().nextBetween(100, 300), 0, PlayerPoisonComponent.clampTime.getRight()),
+                        poisoner
+                );
+            }
 
             ServerPlayNetworking.send(
                     player, new PoisonOverlayPayload("game.player.stung")
@@ -86,7 +97,7 @@ public class PoisonUtils {
                 for (int dz = -radius; dz <= radius; dz++) {
                     BlockPos pos = centerPos.add(dx, dy, dz);
                     TrimmedBedBlockEntity entity = resolveHead(world, pos);
-                    if (entity != null && entity.getHasScorpion()) {
+                    if (entity != null && entity.hasScorpion()) {
                         if (isLineClear(world, centerPos, pos)) {
                             return entity;
                         }

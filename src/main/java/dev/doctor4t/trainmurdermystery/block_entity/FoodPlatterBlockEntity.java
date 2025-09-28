@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PlateBlockEntity extends BlockEntity {
+public class FoodPlatterBlockEntity extends BlockEntity {
     private final List<ItemStack> storedItems = new ArrayList<>();
 
     public List<ItemStack> getStoredItems() {
@@ -46,16 +46,16 @@ public class PlateBlockEntity extends BlockEntity {
         sync();
     }
 
-    public PlateBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public FoodPlatterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
-    public static PlateBlockEntity create(BlockPos pos, BlockState state) {
-        return new PlateBlockEntity(TMMBlockEntities.PLATE, pos, state);
+    public static FoodPlatterBlockEntity create(BlockPos pos, BlockState state) {
+        return new FoodPlatterBlockEntity(TMMBlockEntities.FOOD_PLATTER, pos, state);
     }
 
     public static <T extends BlockEntity> void clientTick(World world, BlockPos pos, BlockState state, T t) {
-        PlateBlockEntity entity = (PlateBlockEntity) t;
+        FoodPlatterBlockEntity entity = (FoodPlatterBlockEntity) t;
         if (!TMMClient.isHitman()) return;
         if (entity.getPoisonedItemsCount() == 0 || entity.getStoredItems().isEmpty()) return;
         if (Random.createThreadSafe().nextBetween(0, 20) < 17) return;

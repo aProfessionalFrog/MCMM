@@ -2,7 +2,6 @@ package dev.doctor4t.trainmurdermystery.util;
 
 import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.cca.PlayerNoteComponent;
-import dev.doctor4t.trainmurdermystery.cca.PlayerStoreComponent;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;

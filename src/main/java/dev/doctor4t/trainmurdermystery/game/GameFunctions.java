@@ -138,10 +138,11 @@ public class GameFunctions {
         for (var serverPlayerEntity : playerPool) {
             serverPlayerEntity.getInventory().clear();
             PlayerMoodComponent.KEY.get(serverPlayerEntity).reset();
-            PlayerStoreComponent.KEY.get(serverPlayerEntity).reset();
+            PlayerShopComponent.KEY.get(serverPlayerEntity).reset();
             PlayerPoisonComponent.KEY.get(serverPlayerEntity).reset();
             PlayerPsychoComponent.KEY.get(serverPlayerEntity).reset();
             PlayerNoteComponent.KEY.get(serverPlayerEntity).reset();
+            PlayerShopComponent.KEY.get(serverPlayerEntity).reset();
         }
         gameComponent.resetHitmanList();
 
@@ -219,7 +220,7 @@ public class GameFunctions {
             player.getInventory().clear();
             player.teleportTo(teleportTarget);
             PlayerMoodComponent.KEY.get(player).reset();
-            PlayerStoreComponent.KEY.get(player).reset();
+            PlayerShopComponent.KEY.get(player).reset();
             PlayerPoisonComponent.KEY.get(player).reset();
             PlayerPsychoComponent.KEY.get(player).reset();
             PlayerNoteComponent.KEY.get(player).reset();
@@ -237,34 +238,38 @@ public class GameFunctions {
         return player == null || !player.isAlive() || player.isCreative() || player.isSpectator();
     }
 
-    public static void killPlayer(PlayerEntity player, boolean spawnBody) {
-        if (player instanceof ServerPlayerEntity serverPlayerEntity)
+    public static void killPlayer(PlayerEntity victim, boolean spawnBody, @Nullable PlayerEntity killer) {
+        if (victim instanceof ServerPlayerEntity serverPlayerEntity)
             serverPlayerEntity.changeGameMode(GameMode.SPECTATOR);
 
-        if (spawnBody) {
-            var body = TMMEntities.PLAYER_BODY.create(player.getWorld());
-            body.setPlayerUuid(player.getUuid());
-
-            var spawnPos = player.getPos().add(player.getRotationVector().normalize().multiply(1));
-
-            body.refreshPositionAndAngles(spawnPos.getX(), player.getY(), spawnPos.getZ(), player.getHeadYaw(), 0f);
-            body.setYaw(player.getHeadYaw());
-            body.setHeadYaw(player.getHeadYaw());
-            player.getWorld().spawnEntity(body);
+        if (killer != null) {
+            PlayerShopComponent.KEY.get(killer).addToBalance(GameConstants.MONEY_PER_KILL);
         }
 
-        for (List<ItemStack> list : player.getInventory().combinedInventory) {
+        if (spawnBody) {
+            var body = TMMEntities.PLAYER_BODY.create(victim.getWorld());
+            body.setPlayerUuid(victim.getUuid());
+
+            var spawnPos = victim.getPos().add(victim.getRotationVector().normalize().multiply(1));
+
+            body.refreshPositionAndAngles(spawnPos.getX(), victim.getY(), spawnPos.getZ(), victim.getHeadYaw(), 0f);
+            body.setYaw(victim.getHeadYaw());
+            body.setHeadYaw(victim.getHeadYaw());
+            victim.getWorld().spawnEntity(body);
+        }
+
+        for (List<ItemStack> list : victim.getInventory().combinedInventory) {
             for (var i = 0; i < list.size(); i++) {
                 var stack = list.get(i);
                 if (shouldDropOnDeath(stack)) {
-                    player.dropItem(stack, true, false);
+                    victim.dropItem(stack, true, false);
                     list.set(i, ItemStack.EMPTY);
                 }
             }
         }
 
-        var gameWorldComponent = TMMComponents.GAME.get(player.getWorld());
-        if (gameWorldComponent.isCivilian(player)) gameWorldComponent.decrementKillsLeft();
+        var gameWorldComponent = TMMComponents.GAME.get(victim.getWorld());
+        if (gameWorldComponent.isCivilian(victim)) gameWorldComponent.decrementKillsLeft();
     }
 
     public static boolean shouldDropOnDeath(@NotNull ItemStack stack) {

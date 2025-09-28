@@ -16,16 +16,24 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 public class TrimmedBedBlockEntity extends BlockEntity {
     private boolean hasScorpion = false;
+    private UUID poisoner;
 
-    public boolean getHasScorpion() {
+    public boolean hasScorpion() {
         return hasScorpion;
     }
 
-    public void setHasScorpion(boolean hasScorpion) {
+    public void setHasScorpion(boolean hasScorpion, @Nullable UUID poisoner) {
         this.hasScorpion = hasScorpion;
+        this.poisoner = poisoner;
         sync();
+    }
+
+    public UUID getPoisoner() {
+        return poisoner;
     }
 
     public TrimmedBedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -46,7 +54,7 @@ public class TrimmedBedBlockEntity extends BlockEntity {
     public static <T extends BlockEntity> void clientTick(World world, BlockPos pos, BlockState state, T t) {
         TrimmedBedBlockEntity entity = (TrimmedBedBlockEntity) t;
         if (!TMMClient.isHitman()) return;
-        if (!entity.getHasScorpion()) return;
+        if (!entity.hasScorpion()) return;
         if (Random.createThreadSafe().nextBetween(0, 20) < 17) return;
 
         world.addParticle(
@@ -72,11 +80,13 @@ public class TrimmedBedBlockEntity extends BlockEntity {
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
         nbt.putBoolean("hasScorpion", this.hasScorpion);
+        if (this.poisoner != null) nbt.putUuid("poisoner", this.poisoner);
     }
 
     @Override
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.readNbt(nbt, registryLookup);
         this.hasScorpion = nbt.getBoolean("hasScorpion");
+        this.poisoner = nbt.containsUuid("poisoner") ? nbt.getUuid("poisoner") : null;
     }
 }

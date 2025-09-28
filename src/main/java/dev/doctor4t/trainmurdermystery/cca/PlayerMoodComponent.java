@@ -65,9 +65,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         if (!TMMComponents.GAME.get(this.player.getWorld()).isRunning() || !TMMClient.isPlayerAliveAndInSurvival()) return;
         if (!this.tasks.isEmpty()) this.setMood(this.mood - this.tasks.size() * GameConstants.MOOD_DRAIN);
 
-        if (isLowerThanDepressed()) {
-
-        } else if (isLowerThanMid()) {
+        if (isLowerThanMid()) {
             // imagine random items for players
             if (psychosisItems.isEmpty() || player.getWorld().getTime() % GameConstants.ITEM_PSYCHOSIS_REROLL_TIME == 0) {
                 psychosisItems.clear();
@@ -144,7 +142,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
     }
 
     public void setMood(float mood) {
-        this.mood = Math.clamp(mood, 0, 1);
+        this.mood = TMMComponents.GAME.get(player.getWorld()).isHitman(player) ? 1 : Math.clamp(mood, 0, 1);
     }
 
     public void eatFood() {
@@ -156,11 +154,11 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
     }
 
     public boolean isLowerThanMid() {
-        return this.mood < GameConstants.MID_MOOD_THRESHOLD;
+        return this.getMood() < GameConstants.MID_MOOD_THRESHOLD;
     }
 
     public boolean isLowerThanDepressed() {
-        return this.mood < GameConstants.DEPRESSIVE_MOOD_THRESHOLD;
+        return this.getMood() < GameConstants.DEPRESSIVE_MOOD_THRESHOLD;
     }
 
     public HashMap<UUID, ItemStack> getPsychosisItems() {

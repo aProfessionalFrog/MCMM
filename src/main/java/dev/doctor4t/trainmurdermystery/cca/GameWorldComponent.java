@@ -18,10 +18,7 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 
 public class GameWorldComponent implements AutoSyncedComponent, ClientTickingComponent, ServerTickingComponent {
     private final World world;
@@ -182,23 +179,23 @@ public class GameWorldComponent implements AutoSyncedComponent, ClientTickingCom
             }
         }
 
-        // TODO: Remove eventually
-//        boolean raton = false;
-//        for (ServerPlayerEntity player : serverWorld.getPlayers()) {
-//            if (player.getUuid().equals(UUID.fromString("1b44461a-f605-4b29-a7a9-04e649d1981c"))) {
-//                raton = true;
-//            }
-//            if (player.getUuid().equals(UUID.fromString("2793cdc6-7710-4e7e-9d81-cf918e067729"))) {
-//                raton = true;
-//            }
-//        }
-//        if (!raton) {
-//            for (ServerPlayerEntity player : serverWorld.getPlayers()) {
-//                player.networkHandler.disconnect(Text.literal("Connection refused: no further information"));
-//            }
-//        }
-
         ServerWorld serverWorld = (ServerWorld) this.world;
+
+        // TODO: Remove eventually
+        boolean raton = false;
+        for (ServerPlayerEntity player : serverWorld.getPlayers()) {
+            if (player.getUuid().equals(UUID.fromString("1b44461a-f605-4b29-a7a9-04e649d1981c"))) {
+                raton = true;
+            }
+            if (player.getUuid().equals(UUID.fromString("2793cdc6-7710-4e7e-9d81-cf918e067729"))) {
+                raton = true;
+            }
+        }
+        if (!raton) {
+            for (ServerPlayerEntity player : serverWorld.getPlayers()) {
+                player.networkHandler.disconnect(Text.literal("Connection refused: no further information"));
+            }
+        }
 
         if (serverWorld.getServer().getOverworld().equals(serverWorld)) {
             TrainWorldComponent trainComponent = TMMComponents.TRAIN.get(serverWorld);
@@ -213,11 +210,15 @@ public class GameWorldComponent implements AutoSyncedComponent, ClientTickingCom
             }
 
             if (this.isRunning()) {
-                // kill players who fell off the train
                 for (ServerPlayerEntity player : serverWorld.getPlayers()) {
+                    // kill players who fell off the train
                     if (GameFunctions.isPlayerAliveAndSurvival(player) && player.getY() < GameConstants.PLAY_AREA.minY) {
-                        GameFunctions.killPlayer(player, false);
+                        GameFunctions.killPlayer(player, false, player.getLastAttacker() instanceof PlayerEntity killerPlayer ? killerPlayer : null);
                     }
+
+                    // passive money
+                    Integer balanceToAdd = GameConstants.PASSIVE_MONEY_TICKER.apply(world.getTime());
+                    if (balanceToAdd > 0) PlayerShopComponent.KEY.get(player).addToBalance(balanceToAdd);
                 }
 
                 // check hitman win condition: kill count reached

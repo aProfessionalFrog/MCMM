@@ -1,6 +1,6 @@
 package dev.doctor4t.trainmurdermystery.game;
 
-import dev.doctor4t.trainmurdermystery.cca.PlayerStoreComponent;
+import dev.doctor4t.trainmurdermystery.cca.PlayerShopComponent;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import dev.doctor4t.trainmurdermystery.util.ShopEntry;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public interface GameConstants {
     // Logistics
@@ -60,13 +61,13 @@ public interface GameConstants {
 
     // Shop Variables
     List<ShopEntry> SHOP_ENTRIES = List.of(
-            new ShopEntry(TMMItems.KNIFE.getDefaultStack(), 50, ShopEntry.Type.WEAPON),
+            new ShopEntry(TMMItems.KNIFE.getDefaultStack(), 10, ShopEntry.Type.WEAPON),
             new ShopEntry(TMMItems.REVOLVER.getDefaultStack(), 75, ShopEntry.Type.WEAPON),
             new ShopEntry(TMMItems.GRENADE.getDefaultStack(), 75, ShopEntry.Type.WEAPON),
             new ShopEntry(TMMItems.PSYCHO_MODE.getDefaultStack(), 75, ShopEntry.Type.WEAPON) {
                 @Override
                 public boolean onBuy(@NotNull PlayerEntity player) {
-                    return PlayerStoreComponent.usePsychoMode(player);
+                    return PlayerShopComponent.usePsychoMode(player);
                 }
             },
             new ShopEntry(TMMItems.POISON_VIAL.getDefaultStack(), 150, ShopEntry.Type.POISON),
@@ -77,17 +78,25 @@ public interface GameConstants {
             new ShopEntry(TMMItems.BLACKOUT.getDefaultStack(), 75, ShopEntry.Type.TOOL) {
                 @Override
                 public boolean onBuy(@NotNull PlayerEntity player) {
-                    return PlayerStoreComponent.useBlackout(player);
+                    return PlayerShopComponent.useBlackout(player);
                 }
             },
-            new ShopEntry(new ItemStack(TMMItems.NOTE, 4), 35, ShopEntry.Type.TOOL)
+            new ShopEntry(new ItemStack(TMMItems.NOTE, 4), 0, ShopEntry.Type.TOOL)
     );
-    int BLACKOUT_MIN_DURATION = getInTicks(0, 10);
-    int BLACKOUT_MAX_DURATION = getInTicks(0, 12);
+    int MONEY_START = 25;
+    Function<Long, Integer> PASSIVE_MONEY_TICKER = time -> {
+        if (time % getInTicks(0, 10) == 0) {
+            return 5;
+        }
+        return 0;
+    };
+    int MONEY_PER_KILL = 100;
 
     // Timers
     int PSYCHO_TIMER = getInTicks(0, 30);
     int FIRECRACKER_TIMER = getInTicks(0, 30);
+    int BLACKOUT_MIN_DURATION = getInTicks(0, 10);
+    int BLACKOUT_MAX_DURATION = getInTicks(0, 12);
 
     static int getInTicks(int minutes, int seconds) {
         return (minutes * 60 + seconds) * 20;

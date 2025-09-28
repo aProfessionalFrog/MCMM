@@ -160,11 +160,11 @@ public class TMMClient implements ClientModInitializer {
                 ctx -> new WheelBlockEntityRenderer(TMM.id("textures/entity/wheel.png"), ctx)
         );
         BlockEntityRendererFactories.register(
-                TMMBlockEntities.PLATE,
+                TMMBlockEntities.FOOD_PLATTER,
                 PlateBlockEntityRenderer::new
         );
         BlockEntityRendererFactories.register(
-                TMMBlockEntities.DRINK_PLATE,
+                TMMBlockEntities.DRINK_TRAY,
                 DrinkPlateBlockEntityRenderer::new
         );
 

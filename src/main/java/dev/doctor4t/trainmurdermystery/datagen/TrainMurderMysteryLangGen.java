@@ -1,5 +1,6 @@
 package dev.doctor4t.trainmurdermystery.datagen;
 
+import dev.doctor4t.ratatouille.util.TextUtils;
 import dev.doctor4t.trainmurdermystery.index.TMMBlocks;
 import dev.doctor4t.trainmurdermystery.index.TMMEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
@@ -61,12 +62,16 @@ public class TrainMurderMysteryLangGen extends FabricLanguageProvider {
         builder.add("tip.door.jammed", "This door is jammed and cannot be opened at the moment!");
 
         builder.add("tip.cooldown", "On cooldown: %s");
-        builder.add("tip.knife.tooltip", "Right-click to use, hold for a second and get close to your victim!\nAfter a kill, cannot be used for 3 minutes\nAttack to knock back / push a player (no cooldown)");
-        builder.add("tip.lockpick.tooltip", "Use on any locked door to open it (no cooldown)\nSneak-use on a door to jam it for 1 minute (disables the lockpick for 5 minutes)");
-        builder.add("tip.revolver.tooltip", "Right-click to use, point and shoot\nDrops if you kill an innocent");
-        builder.add("tip.body_bag.tooltip", "Use on a dead body to bag it up and remove it");
-        builder.add("tip.blackout.tooltip", "Trigger a blackout\nActivated instantly on purchase");
-        builder.add("tip.disguise.tooltip", "Disguise yourself for a bit\nActivated instantly on purchase");
+        builder.add(TextUtils.getItemTranslationKey(TMMItems.KNIFE)+".tooltip", "Right-click to use, hold for a second and get close to your victim!\nAfter a kill, cannot be used for 3 minutes\nAttack to knock back / push a player (no cooldown)");
+        builder.add(TextUtils.getItemTranslationKey(TMMItems.REVOLVER)+".tooltip", "Right-click to use, point and shoot\nDrops if you kill an innocent");
+        builder.add(TextUtils.getItemTranslationKey(TMMItems.GRENADE)+".tooltip", "");
+        builder.add(TextUtils.getItemTranslationKey(TMMItems.PSYCHO_MODE)+".tooltip", "Disguise yourself for a bit\nActivated instantly on purchase");
+        builder.add(TextUtils.getItemTranslationKey(TMMItems.POISON_VIAL)+".tooltip", "");
+        builder.add(TextUtils.getItemTranslationKey(TMMItems.SCORPION)+".tooltip", "");
+        builder.add(TextUtils.getItemTranslationKey(TMMItems.LOCKPICK)+".tooltip", "Use on any locked door to open it (no cooldown)\nSneak-use on a door to jam it for 1 minute (disables the lockpick for 5 minutes)");
+        builder.add(TextUtils.getItemTranslationKey(TMMItems.CROWBAR)+".tooltip", "");
+        builder.add(TextUtils.getItemTranslationKey(TMMItems.BODY_BAG)+".tooltip", "Use on a dead body to bag it up and remove it");
+        builder.add(TextUtils.getItemTranslationKey(TMMItems.BLACKOUT)+".tooltip", "Trigger a blackout\nActivated instantly on purchase");
 
         builder.add("game.win.hitmen", "The hitmen reached their kill count, they win!");
         builder.add("game.win.passengers", "All hitmen were eliminated: the passengers win!");

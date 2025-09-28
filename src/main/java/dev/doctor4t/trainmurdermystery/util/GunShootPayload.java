@@ -45,7 +45,7 @@ public record GunShootPayload(int target) implements CustomPayload {
                             }, 4
                     );
                 }
-                GameFunctions.killPlayer(target, true);
+                GameFunctions.killPlayer(target, true, player);
             }
             player.getWorld().playSound(null, player.getX(), player.getEyeY(), player.getZ(), TMMSounds.ITEM_REVOLVER_CLICK, SoundCategory.PLAYERS, 0.5f, 1f + player.getRandom().nextFloat() * .1f - .05f);
             for (var tracking : PlayerLookup.tracking(player))

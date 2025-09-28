@@ -7,6 +7,7 @@ import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import dev.doctor4t.trainmurdermystery.index.TMMParticles;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.particle.ItemStackParticleEffect;
@@ -35,10 +36,8 @@ public class GrenadeEntity extends ThrownItemEntity {
             world.spawnParticles(ParticleTypes.SMOKE, this.getX(), this.getY() + .1f, this.getZ(), 100, 0, 0, 0, .2f);
             world.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, getDefaultItem().getDefaultStack()), this.getX(), this.getY() + .1f, this.getZ(), 100, 0, 0, 0, 1f);
 
-            for (ServerPlayerEntity player : world.getPlayers(serverPlayerEntity -> {
-                return !this.getOwner().equals(serverPlayerEntity) && this.getBoundingBox().expand(5f).contains(serverPlayerEntity.getPos()) && !TMMComponents.GAME.get(world).isHitman(serverPlayerEntity) && GameFunctions.isPlayerAliveAndSurvival(serverPlayerEntity);
-            })) {
-                GameFunctions.killPlayer(player, true);
+            for (ServerPlayerEntity player : world.getPlayers(serverPlayerEntity -> !this.getOwner().equals(serverPlayerEntity) && this.getBoundingBox().expand(5f).contains(serverPlayerEntity.getPos()) && !TMMComponents.GAME.get(world).isHitman(serverPlayerEntity) && GameFunctions.isPlayerAliveAndSurvival(serverPlayerEntity))) {
+                GameFunctions.killPlayer(player, true, this.getOwner() instanceof PlayerEntity playerEntity ? playerEntity : null);
             }
 
             this.discard();

@@ -19,12 +19,12 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-public class PlayerStoreComponent implements AutoSyncedComponent, ServerTickingComponent, ClientTickingComponent {
-    public static final ComponentKey<PlayerStoreComponent> KEY = ComponentRegistry.getOrCreate(TMM.id("store"), PlayerStoreComponent.class);
+public class PlayerShopComponent implements AutoSyncedComponent, ServerTickingComponent, ClientTickingComponent {
+    public static final ComponentKey<PlayerShopComponent> KEY = ComponentRegistry.getOrCreate(TMM.id("shop"), PlayerShopComponent.class);
     private final PlayerEntity player;
     public int balance = 0;
 
-    public PlayerStoreComponent(PlayerEntity player) {
+    public PlayerShopComponent(PlayerEntity player) {
         this.player = player;
     }
 
@@ -33,14 +33,18 @@ public class PlayerStoreComponent implements AutoSyncedComponent, ServerTickingC
     }
 
     public void reset() {
-        this.balance = 0;
+        this.balance = GameConstants.MONEY_START;
+        this.sync();
+    }
+
+    public void addToBalance(int amount) {
+        this.balance += amount;
         this.sync();
     }
 
     public void tryBuy(int index) {
         if (index < 0 || index >= GameConstants.SHOP_ENTRIES.size()) return;
         var entry = GameConstants.SHOP_ENTRIES.get(index);
-        if (this.balance - entry.price() <= 0) this.balance = 2000;
         if (this.balance >= entry.price()) {
             if (entry.onBuy(this.player)) {
                 this.balance -= entry.price();

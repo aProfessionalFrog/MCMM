@@ -20,13 +20,18 @@ public class TMMItemTooltips {
     public static void addTooltips() {
         ItemTooltipCallback.EVENT.register((itemStack, tooltipContext, tooltipType, tooltipList) -> {
             addTooltipForItem(TMMItems.KNIFE, itemStack, tooltipList);
-            addTooltipForItem(TMMItems.LOCKPICK, itemStack, tooltipList);
+            addCooldownText(TMMItems.KNIFE, tooltipList, itemStack);
             addTooltipForItem(TMMItems.REVOLVER, itemStack, tooltipList);
+            addTooltipForItem(TMMItems.GRENADE, itemStack, tooltipList);
+            addTooltipForItem(TMMItems.PSYCHO_MODE, itemStack, tooltipList);
+            addTooltipForItem(TMMItems.POISON_VIAL, itemStack, tooltipList);
+            addTooltipForItem(TMMItems.SCORPION, itemStack, tooltipList);
+            addTooltipForItem(TMMItems.LOCKPICK, itemStack, tooltipList);
+            addCooldownText(TMMItems.LOCKPICK, tooltipList, itemStack);
+            addTooltipForItem(TMMItems.CROWBAR, itemStack, tooltipList);
+            addCooldownText(TMMItems.CROWBAR, tooltipList, itemStack);
             addTooltipForItem(TMMItems.BODY_BAG, itemStack, tooltipList);
             addTooltipForItem(TMMItems.BLACKOUT, itemStack, tooltipList);
-            addTooltipForItem(TMMItems.PSYCHO_MODE, itemStack, tooltipList);
-            addCooldownText(TMMItems.KNIFE, tooltipList, itemStack);
-            addCooldownText(TMMItems.LOCKPICK, tooltipList, itemStack);
         });
     }
 

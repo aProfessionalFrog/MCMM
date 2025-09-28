@@ -15,6 +15,8 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
+import java.util.UUID;
+
 public class PlayerPoisonComponent implements AutoSyncedComponent, ServerTickingComponent, ClientTickingComponent {
     public static final ComponentKey<PlayerPoisonComponent> KEY = ComponentRegistry.getOrCreate(TMM.id("poison"), PlayerPoisonComponent.class);
     public static final Pair<Integer, Integer> clampTime = new Pair<>(800, 1400);
@@ -25,6 +27,7 @@ public class PlayerPoisonComponent implements AutoSyncedComponent, ServerTicking
     private int poisonPulseCooldown = 0;
     public float pulseProgress = 0f;
     public boolean pulsing = false;
+    public UUID poisoner;
 
     public PlayerPoisonComponent(PlayerEntity player) {
         this.player = player;
@@ -83,13 +86,14 @@ public class PlayerPoisonComponent implements AutoSyncedComponent, ServerTicking
     public void serverTick() {
         //if (!TMMComponents.GAME.get(this.player.getWorld()).isRunning()) return;
 
-        if (this.poisonTicks == 0) GameFunctions.killPlayer(this.player, true);
+        if (this.poisonTicks == 0) GameFunctions.killPlayer(this.player, true, player.getWorld().getPlayerByUuid(poisoner));
         if (this.poisonTicks != -1) this.poisonTicks--;
 
         this.sync();
     }
 
-    public void setPoisonTicks(int ticks) {
+    public void setPoisonTicks(int ticks, UUID poisoner) {
+        this.poisoner = poisoner;
         this.poisonTicks = ticks;
         if (this.initialPoisonTicks == 0) this.initialPoisonTicks = ticks;
         this.sync();
@@ -97,12 +101,14 @@ public class PlayerPoisonComponent implements AutoSyncedComponent, ServerTicking
 
     @Override
     public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+        if (this.poisoner != null) tag.putUuid("poisoner", this.poisoner);
         tag.putInt("poisonTicks", this.poisonTicks);
         tag.putInt("initialPoisonTicks", this.initialPoisonTicks);
     }
 
     @Override
     public void readFromNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+        this.poisoner = tag.contains("poisoner") ? tag.getUuid("poisoner") : null;
         this.poisonTicks = tag.contains("poisonTicks") ? tag.getInt("poisonTicks") : -1;
         this.initialPoisonTicks = tag.contains("initialPoisonTicks") ? tag.getInt("initialPoisonTicks") : 0;
     }

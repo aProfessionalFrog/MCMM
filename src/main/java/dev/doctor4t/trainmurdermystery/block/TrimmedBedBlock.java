@@ -136,8 +136,8 @@ public class TrimmedBedBlock extends BedBlock {
                 }
 
                 if (blockEntity != null) {
-                    if (!blockEntity.getHasScorpion()) {
-                        blockEntity.setHasScorpion(true);
+                    if (!blockEntity.hasScorpion()) {
+                        blockEntity.setHasScorpion(true, player.getUuid());
                         player.getStackInHand(Hand.MAIN_HAND).decrement(1);
 
                         return ActionResult.SUCCESS;
