@@ -9,6 +9,7 @@
     "HungerManagerMixin",
     "ItemEntityMixin",
     "ItemStackMixin",
+    "LivingEntityMixin",
     "PlayerEntityMixin",
     "ServerPlayerEntityMixin",
     "client.LivingEntityRendererMixin"

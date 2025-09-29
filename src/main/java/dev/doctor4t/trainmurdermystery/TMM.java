@@ -108,7 +108,9 @@ public class TMM implements ModInitializer {
 // TORECORD: Remove target system and make the win condition a kill count, turning him into a psycho
 // TORECORD: New name display shows "psycho cohort" for other psychos, and instinct now shows other psychos instead of targets, game recognizes game, allowing them to scheme together
 // TORECORD: You'll notice the killer doesn't start with the knife or the lockpick, because ITEM SHOP. Idea is we're gonna give the killer a bunch of tools and you are free to play how you want! And there's gonna be a lot of options
-// TORECORD: - Fixing the knife (now with a kill indicator)
+// TORECORD: - Fixing the knife
+// TORECORD:        Now has a kill indicator so you know for sure when you get a kill
+// TORECORD:        More knockback for easier push kills (show clip of player shooting me when being pushed off)
 // TORECORD: - Grenade for clumped up people (foils the grouping up cheese)
 //              Does not kill the killer (idk they have shrapnel body armor or something)
 //              Detail of the thrown grenade not having the pin or the handle
@@ -123,6 +125,7 @@ public class TMM implements ModInitializer {
 // TORECORD: - Crowbar (perma opening a door should be a killer ability, allows for creative kills where you can push off players from train doors, as well as allowing passengers to use the exterior in order to give plausible deniability to killers using it to relocate)
 // TORECORD: - Psycho mode (wanted to have an anonymous killer originally for the horror element, this also allows the killer to go crazy how some wanted to)
 //              Ambience can be heard by all players, so you know when to run. Also gives a use to rooms as you can hide in them
+//              TODO: Psycho mode can shrug off one bullet, cause too easy to counter otherwise
 // TORECORD: - Light turn off item + true darkness (increases the horror aspect + amazing scenario of lights turning off and someone being dead when they turn back on + blackout and psycho mode)
 //              True darkness doesn't work that well because of skylight seeping into the block, add a light barrier block that blocks it from entering
 //              Disable name renderer for the duration of the blackout to prevent people seeing in the dark
@@ -152,11 +155,7 @@ public class TMM implements ModInitializer {
 // TORECORD: Players collide with each other (Amy) + let's you step on them
 // TORECORD: System that remembers previous roles and allows cycling of roles (Amy)
 
-// TODO: Item shop sounds
-// TODO: more knife knockback
-// TODO: Bed at the back for 14+ players games
-// TODO: Fix poison visual not getting removed
-// TODO: psycho mode can shrug off one bullet
+// TODO: Fix poison visual not getting removed + prevent poisoning if already poisoned
 // TODO: add command to reset role weighting
 // TODO: fix name and note render over each other if your cursor sees both
 // TODO: small video tutorial on how to play
