@@ -32,20 +32,21 @@ public record GunShootPayload(int target) implements CustomPayload {
         @Override
         public void receive(@NotNull GunShootPayload payload, ServerPlayNetworking.@NotNull Context context) {
             var player = context.player();
-            Item revolver = TMMItems.REVOLVER;
+            var revolver = TMMItems.REVOLVER;
             if (!player.getMainHandStack().isOf(revolver)) return;
             if (player.getServerWorld().getEntityById(payload.target()) instanceof PlayerEntity target && target.distanceTo(player) < 65.0) {
                 var game = TMMComponents.GAME.get(player.getWorld());
                 if (game.isCivilian(target) && !player.isCreative()) {
                     PlayerMoodComponent.KEY.get(player).setMood(0);
                     Scheduler.schedule(() -> {
-                                player.getInventory().remove((s) -> s.isOf(revolver), 1, player.getInventory());
-                                ItemEntity item = player.dropItem(revolver.getDefaultStack(), false, false);
-                                item.setPickupDelay(10);
-                                item.setThrower(player);
-                                ServerPlayNetworking.send(player, new GunDropPayload());
-                            }, 4
-                    );
+                        player.getInventory().remove((s) -> s.isOf(revolver), 1, player.getInventory());
+                        var item = player.dropItem(revolver.getDefaultStack(), false, false);
+                        if (item != null) {
+                            item.setPickupDelay(10);
+                            item.setThrower(player);
+                        }
+                        ServerPlayNetworking.send(player, new GunDropPayload());
+                    }, 4);
                 }
                 GameFunctions.killPlayer(target, true, player);
             }

@@ -18,20 +18,11 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-public class PlayerPsychoComponent implements AutoSyncedComponent, ServerTickingComponent, ClientTickingComponent {
+public class PlayerPsychoComponent implements AutoSyncedComponent, ServerTickingComponent {
     public static final ComponentKey<PlayerPsychoComponent> KEY = ComponentRegistry.getOrCreate(TMM.id("psycho"), PlayerPsychoComponent.class);
-
     private final PlayerEntity player;
     public int psychoTicks = 0;
-
-    public void setPsychoTicks(int ticks) {
-        this.psychoTicks = ticks;
-        this.sync();
-    }
-
-    public int getPsychoTicks() {
-        return this.psychoTicks;
-    }
+    public int armour = 1;
 
     public PlayerPsychoComponent(PlayerEntity player) {
         this.player = player;
@@ -47,60 +38,62 @@ public class PlayerPsychoComponent implements AutoSyncedComponent, ServerTicking
     }
 
     @Override
-    public void clientTick() {
-        if (--this.psychoTicks > 0) {
-            Item bat = TMMItems.BAT;
-            if (!player.getMainHandStack().isOf(bat)) {
-                for (int i = 0; i < 9; i++) {
-                    if (player.getInventory().getStack(i).isOf(bat)) {
-                        player.getInventory().selectedSlot = i;
-                        break;
-                    }
-                }
-            }
+    public void serverTick() {
+        if (this.psychoTicks <= 0) return;
+        if (this.psychoTicks % 20 == 0) this.player.sendMessage(Text.translatable("game.psycho_mode.time", this.psychoTicks / 20).withColor(Colors.RED), true);
+        if (--this.psychoTicks == 0) {
+            this.player.sendMessage(Text.translatable("game.psycho_mode.over").withColor(Colors.RED), true);
+            this.stopPsycho();
         }
+        this.sync();
     }
 
-    @Override
-    public void serverTick() {
-        if (this.psychoTicks > 0) {
-            if (psychoTicks % 20 == 0) {
-                player.sendMessage(Text.translatable("game.psycho_mode.time", this.psychoTicks / 20).withColor(Colors.RED), true);
-            }
-
-            if (--this.psychoTicks == 0) {
-                player.sendMessage(Text.translatable("game.psycho_mode.over").withColor(Colors.RED), true);
-                stopPsycho();
-            }
-
-            this.sync();
+    public boolean startPsycho() {
+        if (ShopEntry.insertStackInFreeSlot(this.player, new ItemStack(TMMItems.BAT))) {
+            this.setPsychoTicks(GameConstants.PSYCHO_TIMER);
+            this.setArmour(GameConstants.PSYCHO_MODE_ARMOUR);
+            var gameWorldComponent = TMMComponents.GAME.get(this.player.getWorld());
+            gameWorldComponent.setPsychosActive(gameWorldComponent.getPsychosActive() + 1);
+            return true;
         }
+        return false;
     }
 
     public void stopPsycho() {
         this.psychoTicks = 0;
         this.player.getInventory().remove(itemStack -> itemStack.isOf(TMMItems.BAT), Integer.MAX_VALUE, this.player.playerScreenHandler.getCraftingInput());
-        GameWorldComponent gameWorldComponent = TMMComponents.GAME.get(player.getWorld());
+        var gameWorldComponent = TMMComponents.GAME.get(this.player.getWorld());
         gameWorldComponent.setPsychosActive(gameWorldComponent.getPsychosActive() - 1);
+//        this.startPsycho();
     }
 
-    public boolean startPsycho() {
-        boolean ret = ShopEntry.insertStackInFreeSlot(player, new ItemStack(TMMItems.BAT));
-        if (ret) {
-            this.setPsychoTicks(GameConstants.PSYCHO_TIMER);
-            GameWorldComponent gameWorldComponent = TMMComponents.GAME.get(player.getWorld());
-            gameWorldComponent.setPsychosActive(gameWorldComponent.getPsychosActive() + 1);
-        }
-        return ret;
+    public int getArmour() {
+        return this.armour;
+    }
+
+    public void setArmour(int armour) {
+        this.armour = armour;
+        this.sync();
+    }
+
+    public int getPsychoTicks() {
+        return this.psychoTicks;
+    }
+
+    public void setPsychoTicks(int ticks) {
+        this.psychoTicks = ticks;
+        this.sync();
     }
 
     @Override
     public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         tag.putInt("psychoTicks", this.psychoTicks);
+        tag.putInt("armour", this.armour);
     }
 
     @Override
     public void readFromNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         this.psychoTicks = tag.contains("psychoTicks") ? tag.getInt("psychoTicks") : 0;
+        this.armour = tag.contains("armour") ? tag.getInt("armour") : 1;
     }
 }

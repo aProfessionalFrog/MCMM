@@ -2,14 +2,20 @@ package dev.doctor4t.trainmurdermystery.mixin.client;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import dev.doctor4t.trainmurdermystery.cca.PlayerPsychoComponent;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.Hand;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,5 +40,16 @@ public class MinecraftClientMixin {
             ))
     private boolean tmm$cancelRevolverUpdateAnimation(HeldItemRenderer instance, Hand hand) {
         return !MinecraftClient.getInstance().player.getStackInHand(hand).isOf(TMMItems.REVOLVER);
+    }
+
+    @WrapOperation(method = "handleInputEvents", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerInventory;selectedSlot:I"))
+    private void tmm$invalid(@NotNull PlayerInventory instance, int value, Operation<Void> original) {
+        var oldSlot = instance.selectedSlot;
+        var component = PlayerPsychoComponent.KEY.get(instance.player);
+        if (component.getPsychoTicks() > 0 &&
+                (instance.getStack(oldSlot).isOf(TMMItems.BAT)) &&
+                (!instance.getStack(value).isOf(TMMItems.BAT))
+        ) return;
+        original.call(instance, value);
     }
 }

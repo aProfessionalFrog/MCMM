@@ -34,6 +34,7 @@ public interface TMMSounds {
     SoundEvent ITEM_CROWBAR_PRY = registrar.create("item.crowbar.pry");
     SoundEvent ITEM_GRENADE_THROW = registrar.create("item.grenade.throw");
     SoundEvent ITEM_GRENADE_EXPLODE = registrar.create("item.grenade.explode");
+    SoundEvent ITEM_PSYCHO_ARMOUR = registrar.create("item.psycho.armour");
 
     // Ambience
     SoundEvent AMBIENT_TRAIN_INSIDE = registrar.create("ambient.train.inside");

@@ -106,6 +106,7 @@ public interface GameConstants {
         return 0;
     };
     int MONEY_PER_KILL = 100;
+    int PSYCHO_MODE_ARMOUR = 1;
 
     // Timers
     int PSYCHO_TIMER = getInTicks(0, 30);

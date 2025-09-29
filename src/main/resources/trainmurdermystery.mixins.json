@@ -11,7 +11,9 @@
     "ItemStackMixin",
     "LivingEntityMixin",
     "PlayerEntityMixin",
+    "PlayerInventoryMixin",
     "ServerPlayerEntityMixin",
+    "ServerPlayNetworkHandlerMixin",
     "client.LivingEntityRendererMixin"
   ],
   "injectors": {

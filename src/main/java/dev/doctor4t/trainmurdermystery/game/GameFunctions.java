@@ -6,6 +6,7 @@ import dev.doctor4t.trainmurdermystery.cca.*;
 import dev.doctor4t.trainmurdermystery.entity.PlayerBodyEntity;
 import dev.doctor4t.trainmurdermystery.index.TMMEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
+import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Clearable;
@@ -239,7 +241,15 @@ public class GameFunctions {
     }
 
     public static void killPlayer(PlayerEntity victim, boolean spawnBody, @Nullable PlayerEntity killer) {
-        if (victim instanceof ServerPlayerEntity serverPlayerEntity && GameFunctions.isPlayerAliveAndSurvival(serverPlayerEntity)) {
+        var component = PlayerPsychoComponent.KEY.get(victim);
+        if (component.getPsychoTicks() > 0 && component.getArmour() > 0) {
+            component.setArmour(component.getArmour() - 1);
+            component.sync();
+            victim.getWorld().playSound(null, victim.getX(), victim.getY(), victim.getZ(), TMMSounds.ITEM_PSYCHO_ARMOUR, SoundCategory.NEUTRAL, 1.0F, 1F + (victim.getRandom().nextFloat() - .5f) / 10f);
+            return;
+        }
+
+        if (victim instanceof ServerPlayerEntity serverPlayerEntity && isPlayerAliveAndSurvival(serverPlayerEntity)) {
             serverPlayerEntity.changeGameMode(GameMode.SPECTATOR);
         } else {
             return;
@@ -253,14 +263,14 @@ public class GameFunctions {
 
         if (spawnBody) {
             var body = TMMEntities.PLAYER_BODY.create(victim.getWorld());
-            body.setPlayerUuid(victim.getUuid());
-
-            var spawnPos = victim.getPos().add(victim.getRotationVector().normalize().multiply(1));
-
-            body.refreshPositionAndAngles(spawnPos.getX(), victim.getY(), spawnPos.getZ(), victim.getHeadYaw(), 0f);
-            body.setYaw(victim.getHeadYaw());
-            body.setHeadYaw(victim.getHeadYaw());
-            victim.getWorld().spawnEntity(body);
+            if (body != null) {
+                body.setPlayerUuid(victim.getUuid());
+                var spawnPos = victim.getPos().add(victim.getRotationVector().normalize().multiply(1));
+                body.refreshPositionAndAngles(spawnPos.getX(), victim.getY(), spawnPos.getZ(), victim.getHeadYaw(), 0f);
+                body.setYaw(victim.getHeadYaw());
+                body.setHeadYaw(victim.getHeadYaw());
+                victim.getWorld().spawnEntity(body);
+            }
         }
 
         for (List<ItemStack> list : victim.getInventory().combinedInventory) {
