@@ -2,6 +2,7 @@ package dev.doctor4t.trainmurdermystery.block;
 
 import com.mojang.serialization.MapCodec;
 import dev.doctor4t.trainmurdermystery.block.entity.HornBlockEntity;
+import dev.doctor4t.trainmurdermystery.cca.TMMComponents;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.TMMBlockEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
@@ -13,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
@@ -51,21 +53,27 @@ public class HornBlock extends BlockWithEntity implements Waterloggable {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (world.getBlockEntity(pos) instanceof HornBlockEntity hornBlockEntity && hornBlockEntity.cooldown <= 0) {
-            if (!world.isClient) {
+        if (world.getBlockEntity(pos) instanceof HornBlockEntity hornBlockEntity) {
+            if (world instanceof ServerWorld serverWorld) {
+                boolean isOp = serverWorld.getServer().getPermissionLevel(player.getGameProfile()) >= 2;
+
+                boolean isSoundReady = hornBlockEntity.cooldown <= 0;
                 var mid = Vec3d.ofCenter(pos);
-                world.playSound(null, mid.getX(), mid.getY() + 3, mid.getZ(), TMMSounds.BLOCK_TRAIN_HORN, SoundCategory.BLOCKS, 100.0f, 1.0f);
+                world.playSound(null, mid.getX(), mid.getY(), mid.getZ(), SoundEvents.BLOCK_CHAIN_BREAK, SoundCategory.BLOCKS, 0.5f, .8f + (world.random.nextFloat() - .5f) * .2f);
+                if (isSoundReady)
+                    world.playSound(null, mid.getX(), mid.getY() + 3, mid.getZ(), TMMSounds.BLOCK_TRAIN_HORN, SoundCategory.BLOCKS, 100.0f, 1.0f);
 
                 // start game
-                if (world instanceof ServerWorld serverWorld && serverWorld.getServer().getPermissionLevel(player.getGameProfile()) >= 2) {
+                if (isOp && !TMMComponents.GAME.get(serverWorld).isRunning()) {
                     GameFunctions.startGame(serverWorld);
                 }
+
+                hornBlockEntity.pull(1);
+                return ActionResult.SUCCESS;
             }
-            hornBlockEntity.pull(1);
-            return ActionResult.SUCCESS;
-        } else {
-            return ActionResult.PASS;
         }
+
+        return ActionResult.PASS;
     }
 
     @Override

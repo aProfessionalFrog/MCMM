@@ -38,7 +38,7 @@ public class HornBlockEntity extends BlockEntity {
     }
 
     public void pull(int pull) {
-        this.cooldown = 400; // 20s
+        if (this.cooldown <= 0) this.cooldown = 600; // 30s
         this.pull = pull;
         if (this.world != null)
             this.world.updateListeners(this.pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_LISTENERS);
