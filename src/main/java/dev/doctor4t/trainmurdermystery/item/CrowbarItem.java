@@ -3,6 +3,7 @@ package dev.doctor4t.trainmurdermystery.item;
 import dev.doctor4t.trainmurdermystery.block_entity.DoorBlockEntity;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
+import dev.doctor4t.trainmurdermystery.util.AdventureUsable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -12,7 +13,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
-public class CrowbarItem extends Item {
+public class CrowbarItem extends Item implements AdventureUsable {
     public CrowbarItem(Settings settings) {
         super(settings);
     }
