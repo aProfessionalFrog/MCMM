@@ -2,10 +2,16 @@
 	"schemaVersion": 1,
 	"id": "trainmurdermystery",
 	"version": "${version}",
-	"name": "TrainMurderMystery",
-	"description": "Library for doctor4t's mods and supporter cosmetics",
+	"name": "The Last Voyage of the Harpy Express",
+	"description": "A train murder mystery social game.",
 	"authors": [
-		"doctor4t"
+		"doctor4t",
+		"AmyMialee",
+		"BackupCup",
+		"Winsweep",
+		"Luxintrus",
+		"CallMeArthys",
+		"Arathain"
 	],
 	"license": "ARR",
 	"icon": "assets/trainmurdermystery/icon.png",
