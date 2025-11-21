@@ -2,6 +2,7 @@ package dev.doctor4t.trainmurdermystery.mixin.compat.sodium;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import dev.doctor4t.trainmurdermystery.cca.TrainWorldComponent;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.compat.SodiumShaderInterface;
 import net.caffeinemc.mods.sodium.client.gl.buffer.GlBufferUsage;
@@ -146,18 +147,16 @@ public abstract class DefaultChunkRendererMixin {
                 finalZ = v3;
             }
 
-//            boolean tooFar = Math.abs(finalX) >= (TMMClient.trainComponent.getTimeOfDay() == TrainWorldComponent.TimeOfDay.SUNDOWN ? 320 : 160);
-//            if (!tooFar) {
-//
-//            }
-            finalX = (blockPos.getX() - finalX) - camera.fracX;
-            finalY = (blockPos.getY() - finalY) - camera.fracY;
-            finalZ = (blockPos.getZ() - finalZ) - camera.fracZ;
+            if (Math.abs(finalX) < (TMMClient.trainComponent.getTimeOfDay() == TrainWorldComponent.TimeOfDay.SUNDOWN ? 320 : 160)) {
+                finalX = (blockPos.getX() - finalX) - camera.fracX;
+                finalY = (blockPos.getY() - finalY) - camera.fracY;
+                finalZ = (blockPos.getZ() - finalZ) - camera.fracZ;
 
 
-            tmm_buffer.putFloat(sectionIndex * 16, -finalX);
-            tmm_buffer.putFloat(sectionIndex * 16 + 4, -finalY);
-            tmm_buffer.putFloat(sectionIndex * 16 + 8, -finalZ);
+                tmm_buffer.putFloat(sectionIndex * 16, -finalX);
+                tmm_buffer.putFloat(sectionIndex * 16 + 4, -finalY);
+                tmm_buffer.putFloat(sectionIndex * 16 + 8, -finalZ);
+            }
         }
     }
 }
