@@ -3,6 +3,7 @@ The Last Voyage of the Harpy Express 1.1.2 - 1.21.1
 ------------------------------------------------------
 - Added a client config option to disable screen shake
   - Removed the /tmm:setVisual screenshake option as a result
+- Disabled inventory while the game is fading in or out
 
 ------------------------------------------------------
 The Last Voyage of the Harpy Express 1.1.1 - 1.21.1
